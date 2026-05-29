@@ -1,117 +1,164 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
 
-  <style>
-    *{
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
 
-    body{
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-    }
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+      }
 
-    .login-container{
-      background: white;
-      padding: 35px;
-      border-radius: 12px;
-      width: 350px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
+      .login-container {
+        background: white;
+        padding: 35px;
+        border-radius: 12px;
+        width: 350px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
 
-    .login-container h2{
-      text-align: center;
-      margin-bottom: 25px;
-      color: #333;
-    }
+      .login-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+      }
 
-    .input-group{
-      margin-bottom: 18px;
-    }
+      .input-group {
+        margin-bottom: 18px;
+      }
 
-    .input-group label{
-      display: block;
-      margin-bottom: 6px;
-      color: #555;
-      font-weight: bold;
-    }
+      .input-group label {
+        display: block;
+        margin-bottom: 6px;
+        color: #555;
+        font-weight: bold;
+      }
 
-    .input-group input{
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      outline: none;
-      transition: 0.3s;
-    }
+      .input-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+      }
 
-    .input-group input:focus{
-      border-color: #4facfe;
-    }
+      .input-group input:focus {
+        border-color: #4facfe;
+      }
 
-    .btn-login{
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #4facfe;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+      .btn-login {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: #4facfe;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
 
-    .btn-login:hover{
-      background: #2196f3;
-    }
+      .btn-login:hover {
+        background: #2196f3;
+      }
 
-    .footer{
-      text-align: center;
-      margin-top: 15px;
-      font-size: 14px;
-    }
+      .footer {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+      }
 
-    .footer a{
-      text-decoration: none;
-      color: #2196f3;
-    }
-  </style>
-</head>
+      .footer a {
+        text-decoration: none;
+        color: #2196f3;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
+    <div class="login-container">
+      <h2>Form Login</h2>
 
-  <div class="login-container">
-    <h2>Form Login</h2>
+      <form id="loginForm">
+        <div class="input-group">
+          <label>Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Masukkan email"
+            required
+          />
+        </div>
 
-    <form>
-      <div class="input-group">
-        <label>Username </label>
-        <input type="text" placeholder="Masukkan username" required>
+        <div class="input-group">
+          <label>Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Masukkan password"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn-login">Login</button>
+      </form>
+
+      <div class="footer">
+        Belum punya akun?
+        <a href="#">Daftar</a>
       </div>
-
-      <div class="input-group">
-        <label>Password</label>
-        <input type="password" placeholder="Masukkan password" required>
-      </div>
-
-      <button type="submit" class="btn-login">Login</button>
-    </form>
-
-    <div class="footer">
-      Belum punya akun?
-      <a href="#">Daftar</a>
     </div>
-  </div>
 
-</body>
+    <script>
+      const loginForm = document.getElementById("loginForm");
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert("Login Berhasil!");
+
+            localStorage.setItem("username", result.user.username);
+
+            window.location.href = "http://127.0.0.1:5500/dashboard.html";
+          
+          } else {
+            alert(result.message || "Login Gagal!");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Terjadi kesalahan pada server.");
+        }
+      });
+    </script>
+  </body>
 </html>

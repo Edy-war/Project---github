@@ -81,7 +81,7 @@ app.post("/register", async (req, res) => {
         if (cekPassword) {
             return res.status(400).json({
                 success: false,
-                message: "Password sudah digunakan! Silahkan pilih password lain."
+                message: "Email sudah terdaftar! Silahkan gunakan email lain."
             });
         }
 

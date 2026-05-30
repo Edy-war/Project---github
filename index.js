@@ -99,7 +99,7 @@ app.post("/register", async (req, res) => {
                 username: user.username,
                 email: user.email
             }
-        });
+        });  
 
     } catch (error) {
         console.error("Detail Error:", error);

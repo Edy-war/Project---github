@@ -50,7 +50,7 @@ app.put("/users/:id", async (req, res) => {
     }
 })
 
-app.post("/registrasi", async (req,res) => {
+app.post("/register", async (req,res) => {
     try {
         const { username, email, password } = req.body;
         const user = await Users.create({

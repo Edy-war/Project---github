@@ -159,7 +159,40 @@
   </div>
 
   <script>
+    const registerForm = document.getElementById("registerForm");
 
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://localhost:3000/register", {
+          method: "POST",
+          headers : {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, email, password})
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert("Registrasi Berhasil! Silahkan Login Ulang...");
+
+          localStorage.setItem("username", result.user.username);
+
+          window.location.href = "login.html";
+        } else{
+          alert(result.message || "Registrasi gagal!")
+        }
+      } catch (error) {
+        console.log("Error:", error);
+        alert("Terjadi kesalahan pada server.")
+      }
+    })
   </script>
 </body>
 </html>

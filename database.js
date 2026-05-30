@@ -9,7 +9,7 @@ try {
     await database.authenticate();
     console.log("database berhasil terhubung")
 } catch (error) {
-    console.error("database gagal terhubung", BaseError)
+    console.error("database gagal terhubung", error)
 }
 
 export default database;

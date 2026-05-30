@@ -50,43 +50,88 @@ app.put("/users/:id", async (req, res) => {
     }
 })
 
-app.post("/register", async (req,res) => {
+app.post("/register", async (req, res) => {
     try {
         const { username, email, password } = req.body;
+
+        if (!username || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Username, email, dan password tidak boleh kosong!"
+            });
+        }
+
+        const cekUsername = await Users.findOne({ where: { username } });
+        if (cekUsername) {
+            return res.status(400).json({
+                success: false,
+                message: "Username sudah digunakan! Silahkan pilih username lain."
+            });
+        }
+
+        const cekEmail = await Users.findOne({ where: { email } });
+        if (cekEmail) {
+            return res.status(400).json({
+                success: false,
+                message: "Email sudah terdaftar! Silahkan gunakan email lain."
+            });
+        }
+
+        const cekPassword = await Users.findOne({ where: { password } });
+        if (cekPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Password sudah digunakan! Silahkan pilih password lain."
+            });
+        }
+
         const user = await Users.create({
             username,
             email,
             password
         });
-        res.status(201).json({
-            success : true,
-            message : "user berhasil dibuat",
-            data : user
+
+        return res.status(201).json({
+            success: true,
+            message: "User berhasil dibuat",
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email
+            }
         });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Detail Error:", error);
+        return res.status(500).json({ 
+            success: false,
+            error: error.message 
+        });
     }
-})
+});
 
 app.post("/login", async (req, res) => {
-
     const { email, password } = req.body;
 
     if (!email || !password) {
-        res.status(400).json({ 
+        return res.status(400).json({ 
             message: "Email dan password tidak boleh kosong!" 
         });
     }
 
     try {
+
         const user = await Users.findOne({
-            where: {
-                email: email,
-                password: password 
-            }
+            where: { email: email }
         });
 
         if (!user) {
+            return res.status(404).json({ 
+                message: "Akun belum terdaftar! Silahkan registrasi terlebih dahulu." 
+            });
+        }
+
+        if (user.password !== password) {
             return res.status(401).json({ 
                 message: "Email atau password salah!" 
             });

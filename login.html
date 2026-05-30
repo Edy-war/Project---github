@@ -147,6 +147,7 @@
           alert("Login Berhasil!");
 
           localStorage.setItem("isLogin", "true");
+          localStorage.setItem("username", email);
 
           window.location.href = "./dashboard.html";
         } else {

@@ -1,7 +1,7 @@
 import express from "express";
 import database from "./database.js";
 import cors from "cors";
-import User from "./userModel.js";
+import Users from "./userModel.js";
 
 const app = express();
 app.use(express.json());
@@ -9,7 +9,7 @@ app.use(cors());
 
 app.get("/", async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await Users.findAll();
     return res.status(200).json({
       success: true,
       message: "users berhasil di ambil",
@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
 app.post("/registrasi", async (req,res) => {
     try {
         const { username, email, password } = req.body;
-        const user = await User.create({
+        const user = await Users.create({
             username,
             email,
             password
@@ -49,7 +49,7 @@ app.post("/login", async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({
+        const user = await Users.findOne({
             where: {
                 email: email,
                 password: password 

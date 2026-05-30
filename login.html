@@ -146,6 +146,8 @@
           if (response.ok) {
             alert("Login Berhasil!");
 
+            localStorage.setItem("isLogin", "true");
+
             window.location.href = "./dashboard.html";
           
           } else {

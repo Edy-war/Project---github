@@ -157,7 +157,7 @@
 
     </form>
   </div>
-
+</body>
   <script>
     const registerForm = document.getElementById("registerForm");
 
@@ -182,8 +182,6 @@
         if (response.ok) {
           alert("Registrasi Berhasil! Silahkan Login Ulang...");
 
-          localStorage.setItem("username", result.user.username);
-
           window.location.href = "login.html";
         } else{
           alert(result.message || "Registrasi gagal!")
@@ -194,5 +192,4 @@
       }
     })
   </script>
-</body>
 </html>

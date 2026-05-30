@@ -1,81 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
 
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family: Arial, sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
 
-        body{
-            background:#f4f4f4;
-        }
+      body {
+        background: #f4f4f4;
+      }
 
-        .navbar{
-            background:#007bff;
-            color:white;
-            padding:15px 30px;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        }
+      .navbar {
+        background: #007bff;
+        color: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .login-btn{
-            text-decoration:none;
-            background:white;
-            color:#007bff;
-            padding:8px 15px;
-            border-radius:5px;
-            font-weight:bold;
-        }
+      .login-btn {
+        text-decoration: none;
+        background: white;
+        color: #007bff;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
 
-        .container{
-            text-align:center;
-            margin-top:100px;
-        }
+      .container {
+        text-align: center;
+        margin-top: 100px;
+      }
 
-        .container h1{
-            margin-bottom:15px;
-        }
+      .container h1 {
+        margin-bottom: 15px;
+      }
 
-        .container p{
-            color:#555;
-        }
+      .container p {
+        color: #555;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="navbar">
-        <h2>Dashboard</h2>
-        <div id="authArea"></div>
+      <h2>Dashboard</h2>
+      <div id="authArea"></div>
     </div>
 
     <div class="container">
-        <h1>Selamat Datang <span id="username"></span></h1>
-        <p>Ini adalah halaman dashboard utama.</p>
+      <h1>Selamat Datang, <span id="username"></span>!</h1>
+      <p>Ini adalah halaman dashboard utama.</p>
     </div>
+  </body>
 
-</body>
-<script>
-const authArea = document.getElementById("authArea");
+  <script>
+    const authArea = document.getElementById("authArea");
+    const usernameSpan = document.getElementById("username");
 
-if (localStorage.getItem("isLogin") === "true") {
-    authArea.innerHTML =
+    const isLogin = localStorage.getItem("isLogin");
+    const savedUsername = localStorage.getItem("username");
+
+    if (isLogin === "true") {
+      authArea.innerHTML =
         '<a href="#" class="login-btn" onclick="logout()">Logout</a>';
-} else {
-    authArea.innerHTML =
-        '<a href="login.html" class="login-btn">Login</a>';
-}
 
-function logout() {
-    localStorage.removeItem("isLogin");
-    location.reload();
-}
-</script>
+      usernameSpan.textContent = savedUsername ? savedUsername : "User";
+    } else {
+      authArea.innerHTML = '<a href="login.html" class="login-btn">Login</a>';
+
+      usernameSpan.textContent = "Tamu";
+    }
+
+    function logout() {
+      localStorage.removeItem("isLogin");
+      localStorage.removeItem("username");
+    }
+  </script>
 </html>

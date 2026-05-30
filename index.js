@@ -10,7 +10,7 @@ app.use(cors());
 app.get("/", async (req, res) => {
   try {
     const users = await Users.findAll();
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: "users berhasil di ambil",
       data: users,
@@ -20,6 +20,36 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.delete("/users/:id", async (req, res) => {
+    try {
+        const {id} = req.params;
+        const deleted = await Users.destroy({
+            where: { id: id}
+        });
+        if (deleted) {
+            res.status(200).json({ message : (`user dengan id ${id} berhasil dihapus`)})
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+app.put("/users/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { username, email, password } = req.body;
+        const updated = await Users.update(
+            { username, email, password },
+            { where: { id: id }}
+        );
+        if (updated) {
+            res.status(200).json({ message : (`user dengan id ${id} berhasil diperbarui`)});
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
 app.post("/registrasi", async (req,res) => {
     try {
         const { username, email, password } = req.body;
@@ -28,7 +58,7 @@ app.post("/registrasi", async (req,res) => {
             email,
             password
         });
-        return res.status(201).json({
+        res.status(201).json({
             success : true,
             message : "user berhasil dibuat",
             data : user
@@ -43,7 +73,7 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
             message: "Email dan password tidak boleh kosong!" 
         });
     }
